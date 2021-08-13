@@ -6,7 +6,7 @@ import { convertWitness, prove, beBuff2int } from './utils'
 import { storage, hashers, tree } from 'semaphore-merkle-tree'
 const MemStorage = storage.MemStorage
 const MerkleTree = tree.MerkleTree
-const MimcSpongeHasher = hashers.MimcSpongeHasher
+const PoseidonHasher = hashers.PoseidonHasher
 const stringifyBigInts: (obj: object) => object = snarkjs.stringifyBigInts
 const unstringifyBigInts: (obj: object) => object = snarkjs.unstringifyBigInts
 
@@ -140,7 +140,7 @@ const signMsg = (
     msg: SnarkBigInt,
 ): EdDSASignature => {
 
-    return circomlib.eddsa.signMiMCSponge(privKey, msg)
+    return circomlib.eddsa.signPoseidon(privKey, msg)
 }
 
 const genSignedMsg = (
@@ -148,7 +148,8 @@ const genSignedMsg = (
     externalNullifier: SnarkBigInt,
     signalHash: SnarkBigInt,
 ) => {
-    const msg = circomlib.mimcsponge.multiHash([
+    const hasher = circomlib.poseidon.createHash(/*t*/3)
+    const msg = hasher([
         externalNullifier,
         signalHash,
     ])
@@ -174,7 +175,7 @@ const verifySignature = (
     pubKey: EddsaPublicKey,
 ): boolean => {
 
-    return circomlib.eddsa.verifyMiMCSponge(msg, signature, pubKey)
+    return circomlib.eddsa.verifyPoseidonSponge(msg, signature, pubKey)
 }
 
 const genTree = async (
@@ -190,6 +191,7 @@ const genTree = async (
 
     return tree
 }
+
 const genMixerSignal = (
     recipientAddress: string,
     forwarderAddress: string,
@@ -339,7 +341,7 @@ const setupTree = (
     prefix: string = 'semaphore',
 ): tree.MerkleTree => {
     const storage = new MemStorage()
-    const hasher = new MimcSpongeHasher()
+    const hasher = new PoseidonHasher()
 
     return new MerkleTree(
         prefix,
