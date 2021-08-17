@@ -148,7 +148,7 @@ const genSignedMsg = (
     externalNullifier: SnarkBigInt,
     signalHash: SnarkBigInt,
 ) => {
-    const hasher = circomlib.poseidon.createHash(/*t*/3)
+    const hasher = circomlib.poseidon
     const msg = hasher([
         externalNullifier,
         signalHash,

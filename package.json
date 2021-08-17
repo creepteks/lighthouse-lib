@@ -30,9 +30,10 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "circomlib": "0.0.21",
+    "@types/node": "^16.6.1",
+    "circomlib": "^0.5.3",
     "ethers": "^4.0.37",
-    "semaphore-merkle-tree": "^1.0.13",
+    "semaphore-merkle-tree": "git+https://github.com/creepteks/lighthouse-merkle-tree",
     "snarkjs": "0.1.20",
     "websnark": "0.0.5"
   }
