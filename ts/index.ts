@@ -9,6 +9,7 @@ const MerkleTree = tree.MerkleTree
 const PoseidonHasher = hashers.PoseidonHasher
 const stringifyBigInts: (obj: object) => object = snarkjs.stringifyBigInts
 const unstringifyBigInts: (obj: object) => object = snarkjs.unstringifyBigInts
+const poseidon = circomlib.poseidon
 
 type SnarkBigInt = snarkjs.bigInt
 type EddsaPrivateKey = Buffer
@@ -148,7 +149,7 @@ const genSignedMsg = (
     externalNullifier: SnarkBigInt,
     signalHash: SnarkBigInt,
 ) => {
-    const hasher = circomlib.poseidon
+    const hasher = poseidon
     const msg = hasher([
         externalNullifier,
         signalHash,
