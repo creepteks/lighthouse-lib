@@ -176,7 +176,7 @@ const verifySignature = (
     pubKey: EddsaPublicKey,
 ): boolean => {
 
-    return circomlib.eddsa.verifyPoseidonSponge(msg, signature, pubKey)
+    return circomlib.eddsa.verifyPoseidon(msg, signature, pubKey)
 }
 
 const genTree = async (
